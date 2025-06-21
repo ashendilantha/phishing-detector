@@ -1,0 +1,10 @@
+flask==2.3.3
+scikit-learn==1.7.0
+pandas>=2.2.2
+numpy==2.3.0
+requests==2.31.0
+beautifulsoup4==4.12.2
+tldextract==3.4.4
+whois==0.9.27
+joblib==1.5.1
+flask-cors==4.0.0
