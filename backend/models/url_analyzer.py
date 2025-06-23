@@ -92,7 +92,7 @@ class URLAnalyzer:
             return -1
         
         def calculate_risk_attack(self, domain):
-            suspicious_chars = ['a', 'e', 'o', 'p', 'c', 'x', 'y']
+            suspicious_chars = ['а', 'е', 'о', 'р', 'с', 'х', 'у'] 
             return any(char in domain for char in suspicious_chars)
         
         def calculate_risk_score(self, features):
