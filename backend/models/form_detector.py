@@ -63,4 +63,51 @@ class FormDetector:
             if suspicious_inputs:
                 analysis['risk_score'] += len(suspicious_inputs) * 10
                 analysis['indicators'].append(f"Suspicious input fields: {suspicious_inputs}")
-                
+            
+            if action:
+                if action.startswith('http') and not any(domain in action for domain in
+                                                         self.legitimate_domains):
+                    analysis['risk_score'] += 25
+                    analysis['indicators'].append('Form submits to external domain')
+                elif action.startswith('javascript:'):
+                    analysis['risk_score'] += 20
+                    analysis['indicators'].append('Form uses JavaScript action')
+
+            # Check for missing CSRF protection
+            csrf_tokens = form.find_all('input', {'type': 'hidden'})
+            if not csrf_tokens and 'password' in input_types:
+                analysis['risk_score'] += 15
+                analysis['indicators'].append('No CSRF protection detected')
+            
+            # Check method
+            if method == 'get' and 'password' in input_types:
+                analysis['risk_score'] += 20
+                analysis['indicators'].append('Password sent via GET method')
+            
+            analysis['is_suspicious'] = analysis['risk_score'] >= 30
+            
+            return analysis
+        
+        def check_page_indicators(self, soup, url):
+            #Check phishing indicators
+            indicators = []
+            
+            # Check for suspicious title
+            title = soup.find('title')
+            if title:
+                title_text = title.get_text().lower()
+                if any(word in title_text for word in ['verify', 'suspend', 'urgent', 'security']):
+                    indicators.append('Suspicious page title')
+            
+            # Check for fake SSL indicators
+            ssl_indicators = soup.find_all(text=re.compile(r'secure|ssl|encrypted', re.I))
+            if ssl_indicators and not url.startswith('https'):
+                indicators.append('Claims to be secure but not using HTTPS')
+            
+            # Check for urgency language
+            urgency_words = ['urgent', 'immediate', 'expire', 'suspend', 'limited time']
+            page_text = soup.get_text().lower()
+            if sum(1 for word in urgency_words if word in page_text) >= 2:
+                indicators.append('Uses urgency language')
+            
+            return indicators
