@@ -110,4 +110,3 @@ class FormDetector:
             if sum(1 for word in urgency_words if word in page_text) >= 2:
                 indicators.append('Uses urgency language')
             
-            return indicators
