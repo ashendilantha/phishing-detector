@@ -4,6 +4,8 @@ from models.url_analyzer import URLAnalyzer
 from models.form_detector import FormDetector
 from models.ml_model import PhishingMLModel
 import os
+import re
+import requests
 
 app = Flask(__name__, template_folder='../frontend/templates')
 CORS(app)
@@ -70,11 +72,22 @@ def analyze_page():
         if not url:
             return jsonify({'error': 'URL is required'}), 400
         
+        # Basic URL validation
+        if not re.match(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', url):
+            return jsonify({'error': 'Invalid URL format'}), 400
+        
         result = form_detector.analyze_page(url)
+        
+        # Ensure result is a dictionary and handle potential errors
+        if not isinstance(result, dict) or 'error' in result:
+            return jsonify(result if 'error' in result else {'error': 'Analysis failed to produce valid results'}), 500
+        
         return jsonify(result)
         
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': f'Failed to fetch webpage: {str(e)}'}), 500
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': f'Analysis failed: {str(e)}'}), 500
 
 @app.route('/api/educational-content/<language>')
 def get_educational_content(language):
