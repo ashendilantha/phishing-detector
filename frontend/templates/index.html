@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Detection Toolkit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --warning-color: #f8961e;
+            --info-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container {
+            padding-bottom: 3rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-bottom: none;
+            padding: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-secondary {
+            background: var(--info-color);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #3a7bd5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 149, 239, 0.4);
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+        
+        .risk-high { 
+            background-color: #fff0f3;
+            border-left: 5px solid var(--danger-color);
+            color: #d90429;
+        }
+        
+        .risk-medium { 
+            background-color: #fff8e6;
+            border-left: 5px solid var(--warning-color);
+            color: #f77f00;
+        }
+        
+        .risk-low { 
+            background-color: #f0f9ff;
+            border-left: 5px solid var(--info-color);
+            color: #1a759f;
+        }
+        
+        .risk-safe { 
+            background-color: #f0fff4;
+            border-left: 5px solid #38b000;
+            color: #1b4332;
+        }
+        
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .language-selector select {
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background-color: white;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+        
+        #mainTitle {
+            font-size: 2.5rem;
+            margin-bottom: 2rem !important;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+        
+        #mainTitle::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .spinner {
+            width: 3rem;
+            height: 3rem;
+        }
+        
+        .risk-meter {
+            height: 20px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #38b000, #f8961e, #f72585);
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .risk-meter-indicator {
+            position: absolute;
+            height: 100%;
+            width: 4px;
+            background-color: white;
+            top: 0;
+            transform: translateX(-50%);
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        
+        .tooltip-icon {
+            color: var(--primary-color);
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h4 {
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            #mainTitle {
+                font-size: 2rem;
+            }
+            
+            .card-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="language-selector">
+            <select id="languageSelect" class="form-select shadow-sm">
+                <option value="en">English</option>
+                <option value="si">සිංහල</option>
+                <option value="ta">தமிழ்</option>
+            </select>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h1 class="text-center mb-5 animate__animated animate__fadeIn" id="mainTitle">
+                    <i class="fas fa-shield-alt me-3"></i>Phishing Detection Toolkit
+                </h1>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="feature-card card animate__animated animate__fadeInUp">
+                            <i class="fas fa-link feature-icon"></i>
+                            <h4>URL Analysis</h4>
+                            <p>Detect suspicious URLs and phishing attempts in real-time</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card card animate__animated animate__fadeInUp animate__delay-1s">
+                            <i class="fas fa-file-code feature-icon"></i>
+                            <h4>Content Scan</h4>
+                            <p>Analyze page content for phishing indicators</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card card animate__animated animate__fadeInUp animate__delay-2s">
+                            <i class="fas fa-graduation-cap feature-icon"></i>
+                            <h4>Education</h4>
+                            <p>Learn how to protect yourself from online threats</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card animate__animated animate__fadeIn">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4" id="analyzeTitle">
+                            <i class="fas fa-search me-2"></i>Analyze URL
+                        </h5>
+                        <div class="mb-4">
+                            <label for="urlInput" class="form-label" id="urlLabel">
+                                Enter URL to analyze:
+                                <i class="fas fa-info-circle tooltip-icon" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Enter a complete URL including http:// or https://"></i>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-link"></i></span>
+                                <input type="url" class="form-control" id="urlInput" placeholder="https://example.com">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-3">
+                            <button type="button" class="btn btn-primary" id="analyzeBtn">
+                                <i class="fas fa-magnifying-glass me-2"></i>Analyze
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="analyzePageBtn">
+                                <i class="fas fa-file-lines me-2"></i>Analyze Page Content
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner-border text-primary spinner" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2" id="loadingText">Analyzing URL...</p>
+                </div>
+                
+                <div id="results" class="mt-4 animate__animated animate__fadeIn" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0" id="resultsTitle">
+                                <i class="fas fa-clipboard-list me-2"></i>Analysis Results
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="resultContent"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="educational" class="mt-4 animate__animated animate__fadeIn">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0" id="educationTitle">
+                                <i class="fas fa-lightbulb me-2"></i>Safety Tips
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <ul class="list-group list-group-flush" id="tipsList"></ul>
+                                </div>
+                                <div class="col-md-4 d-none d-md-block">
+                                    <img src="https://img.icons8.com/fluency/240/000000/security-checked.png" 
+                                         class="img-fluid" 
+                                         alt="Security illustration">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentLanguage = 'en';
+        
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+        
+        // Language switching
+        document.getElementById('languageSelect').addEventListener('change', function() {
+            currentLanguage = this.value;
+            loadEducationalContent();
+            updateUILanguage();
+        });
+        
+        // URL Analysis
+        document.getElementById('analyzeBtn').addEventListener('click', function() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) {
+                showAlert('Please enter a URL', 'warning');
+                return;
+            }
+            
+            showLoading('Analyzing URL...');
+            analyzeURL(url);
+        });
+        
+        // Page Analysis
+        document.getElementById('analyzePageBtn').addEventListener('click', function() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) {
+                showAlert('Please enter a URL', 'warning');
+                return;
+            }
+            
+            showLoading('Analyzing page content...');
+            analyzePage(url);
+        });
+        
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
+        
+        function showAlert(message, type) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            
+            // You might want to add this to a specific alerts container
+            document.body.insertAdjacentHTML('afterbegin', alertHtml);
+        }
+        
+        async function analyzeURL(url) {
+            try {
+                const response = await fetch('/api/analyze-url', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: url })
+                });
+                
+                const result = await response.json();
+                hideLoading();
+                displayURLResults(result);
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                showAlert('Analysis failed. Please try again.', 'danger');
+            }
+        }
+        
+        async function analyzePage(url) {
+            try {
+                const response = await fetch('/api/analyze-page', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: url })
+                });
+                
+                const result = await response.json();
+                hideLoading();
+                displayPageResults(result);
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                showAlert('Page analysis failed. Please try again.', 'danger');
+            }
+        }
+        
+        function displayURLResults(result) {
+            const resultsDiv = document.getElementById('results');
+            const contentDiv = document.getElementById('resultContent');
+            
+            const riskLevel = result.heuristic_analysis.risk_level.toLowerCase();
+            const riskScore = result.heuristic_analysis.risk_score;
+            
+            let html = `
+                <div class="alert risk-${riskLevel} animate__animated animate__fadeIn">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5><i class="fas fa-${getRiskIcon(riskLevel)} me-2"></i>Risk Level: ${result.heuristic_analysis.risk_level}</h5>
+                            <p class="mb-0">Risk Score: ${riskScore}/100</p>
+                        </div>
+                        <span class="badge bg-${getRiskBadge(riskLevel)}">${riskScore}%</span>
+                    </div>
+                    <div class="risk-meter mt-3">
+                        <div class="risk-meter-indicator" style="left: ${riskScore}%"></div>
+                    </div>
+                </div>
+            `;
+            
+            if (result.heuristic_analysis.warnings.length > 0) {
+                html += `
+                    <div class="mb-4 animate__animated animate__fadeIn">
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i>Warnings:</h5>
+                        <div class="list-group">`;
+                
+                result.heuristic_analysis.warnings.forEach(warning => {
+                    html += `
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-circle text-danger me-3"></i>
+                                <div>${warning}</div>
+                            </div>
+                        </div>`;
+                });
+                
+                html += `</div></div>`;
+            }
+            
+            if (result.ml_prediction && result.ml_prediction.is_phishing !== null) {
+                const mlIcon = result.ml_prediction.is_phishing ? 'fa-times-circle text-danger' : 'fa-check-circle text-success';
+                const mlText = result.ml_prediction.is_phishing ? 'Likely Phishing' : 'Likely Safe';
+                
+                html += `
+                    <div class="mb-4 animate__animated animate__fadeIn">
+                        <h5><i class="fas fa-robot me-2"></i>AI Prediction:</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas ${mlIcon} fa-2x me-3"></i>
+                                            <div>
+                                                <h5 class="mb-0">${mlText}</h5>
+                                                <small class="text-muted">Machine Learning Analysis</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="progress mt-3 mt-md-0">
+                                            <div class="progress-bar bg-${result.ml_prediction.is_phishing ? 'danger' : 'success'}" 
+                                                 role="progressbar" 
+                                                 style="width: ${result.ml_prediction.confidence * 100}%" 
+                                                 aria-valuenow="${result.ml_prediction.confidence * 100}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                                ${(result.ml_prediction.confidence * 100).toFixed(1)}% confidence
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+            
+            html += `
+                <div class="animate__animated animate__fadeIn">
+                    <h5><i class="fas fa-lightbulb me-2"></i>Recommendations:</h5>
+                    <div class="list-group">`;
+            
+            result.recommendations.forEach(rec => {
+                html += `
+                    <div class="list-group-item">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-3"></i>
+                            <div>${rec}</div>
+                        </div>
+                    </div>`;
+            });
+            
+            html += `</div></div>`;
+            
+            contentDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            
+            // Animate results
+            const elements = contentDiv.querySelectorAll('.animate__animated');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+        
+        function displayPageResults(result) {
+            const resultsDiv = document.getElementById('results');
+            const contentDiv = document.getElementById('resultContent');
+            
+            let html = `<h5 class="mb-4"><i class="fas fa-file-lines me-2"></i>Page Analysis Results</h5>`;
+            
+            html += `
+                <div class="card mb-4 animate__animated animate__fadeIn">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-list-check fa-2x text-primary me-3"></i>
+                                    <div>
+                                        <h5 class="mb-0">${result.forms_found}</h5>
+                                        <small class="text-muted">Forms Found</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-triangle-exclamation fa-2x text-warning me-3"></i>
+                                    <div>
+                                        <h5 class="mb-0">${result.suspicious_forms.length}</h5>
+                                        <small class="text-muted">Suspicious Forms</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            
+            if (result.suspicious_forms.length > 0) {
+                html += '<div class="alert alert-warning animate__animated animate__fadeIn"><h5><i class="fas fa-exclamation-triangle me-2"></i>Suspicious Forms Detected:</h5>';
+                
+                result.suspicious_forms.forEach(form => {
+                    const riskPercentage = Math.min(100, Math.max(0, form.analysis.risk_score));
+                    const riskColor = riskPercentage > 70 ? 'danger' : riskPercentage > 40 ? 'warning' : 'info';
+                    
+                    html += `
+                        <div class="card mb-3">
+                            <div class="card-header bg-${riskColor}-subtle">
+                                <h6 class="mb-0">Form ${form.form_index + 1}: Risk Score ${form.analysis.risk_score}</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress mb-3">
+                                    <div class="progress-bar bg-${riskColor}" 
+                                         role="progressbar" 
+                                         style="width: ${riskPercentage}%" 
+                                         aria-valuenow="${riskPercentage}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        ${riskPercentage}% risk
+                                    </div>
+                                </div>
+                                <ul class="list-group list-group-flush">`;
+                    
+                    form.analysis.indicators.forEach(indicator => {
+                        html += `
+                            <li class="list-group-item">
+                                <i class="fas fa-circle-exclamation text-${riskColor} me-2"></i>
+                                ${indicator}
+                            </li>`;
+                    });
+                    
+                    html += `</ul></div></div>`;
+                });
+                
+                html += '</div>';
+            }
+            
+            if (result.risk_indicators.length > 0) {
+                html += `
+                    <div class="animate__animated animate__fadeIn">
+                        <h5><i class="fas fa-flag me-2"></i>Page Risk Indicators:</h5>
+                        <div class="list-group">`;
+                
+                result.risk_indicators.forEach(indicator => {
+                    html += `
+                        <div class="list-group-item">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-circle-info text-primary me-3"></i>
+                                <div>${indicator}</div>
+                            </div>
+                        </div>`;
+                });
+                
+                html += `</div></div>`;
+            }
+            
+            contentDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+            
+            // Animate results
+            const elements = contentDiv.querySelectorAll('.animate__animated');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+        
+        function getRiskIcon(riskLevel) {
+            switch(riskLevel) {
+                case 'high': return 'skull-crossbones';
+                case 'medium': return 'exclamation-triangle';
+                case 'low': return 'info-circle';
+                default: return 'check-circle';
+            }
+        }
+        
+        function getRiskBadge(riskLevel) {
+            switch(riskLevel) {
+                case 'high': return 'danger';
+                case 'medium': return 'warning';
+                case 'low': return 'info';
+                default: return 'success';
+            }
+        }
+        
+        async function loadEducationalContent() {
+            try {
+                const response = await fetch(`/api/educational-content/${currentLanguage}`);
+                const content = await response.json();
+                
+                document.getElementById('educationTitle').textContent = content.title;
+                
+                const tipsList = document.getElementById('tipsList');
+                tipsList.innerHTML = '';
+                
+                content.tips.forEach(tip => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item animate__animated animate__fadeIn';
+                    li.innerHTML = `
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-3"></i>
+                            <div>${tip}</div>
+                        </div>
+                    `;
+                    tipsList.appendChild(li);
+                });
+                
+                // Animate tips
+                const tips = tipsList.querySelectorAll('.animate__animated');
+                tips.forEach((tip, index) => {
+                    tip.style.animationDelay = `${index * 0.1}s`;
+                });
+            } catch (error) {
+                console.error('Error loading educational content:', error);
+            }
+        }
+        
+        function updateUILanguage() {
+            const translations = {
+                'en': {
+                    'mainTitle': 'Phishing Detection Toolkit',
+                    'analyzeTitle': 'Analyze URL',
+                    'urlLabel': 'Enter URL to analyze:',
+                    'resultsTitle': 'Analysis Results',
+                    'educationTitle': 'Safety Tips'
+                },
+                'si': {
+                    'mainTitle': 'ෆිෂිං හඳුනාගැනීමේ මෙවලම්',
+                    'analyzeTitle': 'URL විශ්ලේෂණය',
+                    'urlLabel': 'විශ්ලේෂණය කිරීමට URL ඇතුළත් කරන්න:',
+                    'resultsTitle': 'විශ්ලේෂණ ප්‍රතිඵල',
+                    'educationTitle': 'ආරක්ෂිත උපදෙස්'
+                },
+                'ta': {
+                    'mainTitle': 'ஃபிஷிங் கண்டறிதல் கருவித்தொகுப்பு',
+                    'analyzeTitle': 'URL பகுப்பாய்வு',
+                    'urlLabel': 'பகுப்பாய்வு செய்ய URL ஐ உள்ளிடவும்:',
+                    'resultsTitle': 'பகுப்பாய்வு முடிவுகள்',
+                    'educationTitle': 'பாதுகாப்பு உதவிக்குறிப்புகள்'
+                }
+            };
+            
+            const lang = translations[currentLanguage];
+            if (lang) {
+                Object.keys(lang).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.textContent = lang[key];
+                    }
+                });
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEducationalContent();
+            
+            // Add animation to cards on scroll
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.animate__animated');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementPosition < windowHeight - 100) {
+                        element.classList.add('animate__fadeInUp');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Run once on load
+        });
+    </script>
+</body>
+</html>

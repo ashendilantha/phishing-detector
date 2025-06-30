@@ -17,7 +17,7 @@ class PhishingMLModel:
                          int(url_features['has_ip']),
                          url_features['suspicious_keywords'],
                          url_features['subdomain_count'],
-                         int(url_features['has_suspicious_tkd']),
+                         int(url_features['has_suspicious_tld']),
                          int(url_features['has_url_shorteners']),
                          int(url_features['has_https']),
                          url_features['domain_age'] if url_features['domain_age'] >= 0 else 0,
