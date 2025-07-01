@@ -137,7 +137,7 @@ class URLAnalyzer:
         
         # No HTTPS
         if not features['has_https']:
-            score += 10
+            score += 15
 
         # New domain
         if features['domain_age'] < 30:
