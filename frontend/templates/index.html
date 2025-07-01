@@ -17,117 +17,217 @@
             --info-color: #4895ef;
             --light-color: #f8f9fa;
             --dark-color: #212529;
+            --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            --card-bg: #fff;
+            --text-color: #212529;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            background: var(--background-gradient);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
         }
-        
-        .container {
-            padding-bottom: 3rem;
+
+        .dark-mode {
+            --background-gradient: linear-gradient(135deg, #23272f 0%, #181a20 100%);
+            --card-bg: #23272f;
+            --text-color: #f8f9fa;
         }
-        
+
         .card {
+            background: var(--card-bg);
             border: none;
             border-radius: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
-            background: white;
+            color: var(--text-color);
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
-        
+
         .card-header {
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            color: white;
+            color: white !important;
             border-bottom: none;
             padding: 1.25rem;
             font-weight: 600;
         }
-        
+
         .card-body {
             padding: 2rem;
+            color: var(--text-color);
+            background: inherit;
         }
-        
-        .btn-primary {
-            background: var(--primary-color);
-            border: none;
-            padding: 0.6rem 1.5rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
+
+        .language-selector select {
+            background: #f8f9fa !important;
+            color: #343a40 !important;
+            border-color: #f8f9fa !important;
         }
-        
-        .btn-primary:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+
+        .dark-mode .card,
+        .dark-mode .card-body,
+        .dark-mode .list-group-item,
+        .dark-mode .alert,
+        .dark-mode .feature-card,
+        .dark-mode .form-control,
+        .dark-mode .input-group-text {
+            background-color: #23272f !important;
+            color: #f8f9fa !important;
+            border-color: #343a40 !important;
         }
-        
-        .btn-secondary {
-            background: var(--info-color);
-            border: none;
-            padding: 0.6rem 1.5rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
+
+        .dark-mode .card-header {
+            background: linear-gradient(to right, #23272f, #343a40) !important;
+            color: #f8f9fa !important;
         }
+
         
-        .btn-secondary:hover {
-            background: #3a7bd5;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(72, 149, 239, 0.4);
-        }
-        
-        .form-control {
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .form-control:focus {
+
+        .dark-mode .form-control:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+            background-color: #181a20 !important;
+            color: #f8f9fa !important;
         }
-        
+
+        .dark-mode .feature-card h4,
+        .dark-mode .feature-card p,
+        .dark-mode .list-group-item,
+        .dark-mode .alert,
+        .dark-mode .progress-bar,
+        .dark-mode .tooltip-inner,
+        .dark-mode .badge,
+        .dark-mode .btn,
+        .dark-mode .btn-primary,
+        .dark-mode .btn-secondary {
+            color: #f8f9fa !important;
+        }
+
+        .dark-mode .progress-bar.bg-danger,
+        .dark-mode .progress-bar.bg-warning,
+        .dark-mode .progress-bar.bg-info,
+        .dark-mode .progress-bar.bg-success {
+            color: #23272f !important;
+        }
+
+        .dark-mode .language-selector select {
+            background: #23272f !important;
+            color: #f8f9fa !important;
+            border-color: #343a40 !important;
+        }
+
+        .dark-mode .input-group-text {
+            background: #23272f !important;
+            color: #f8f9fa !important;
+            border-color: #343a40 !important;
+        }
+
+        .dark-mode .toast,
+        .dark-mode .toast-body {
+            background: #23272f !important;
+            color: #f8f9fa !important;
+        }
+
+        .dark-mode .list-group-item {
+            border-color: #343a40 !important;
+        }
+
+        .dark-mode .alert-warning {
+            background-color: #3a2c1a !important;
+            color: #ffe066 !important;
+        }
+        .dark-mode .alert-danger {
+            background-color: #3a1a1a !important;
+            color: #ff6b6b !important;
+        }
+        .dark-mode .alert-info {
+            background-color: #1a2c3a !important;
+            color: #4cc9f0 !important;
+        }
+        .dark-mode .alert-success {
+            background-color: #1a3a2c !important;
+            color: #38b000 !important;
+        }
+
+        .dark-mode .risk-high {
+            background-color: #3a1a1a !important;
+            color: #ff6b6b !important;
+            border-left: 5px solid var(--danger-color);
+        }
+        .dark-mode .risk-medium {
+            background-color: #3a2c1a !important;
+            color: #ffe066 !important;
+            border-left: 5px solid var(--warning-color);
+        }
+        .dark-mode .risk-low {
+            background-color: #1a2c3a !important;
+            color: #4cc9f0 !important;
+            border-left: 5px solid var(--info-color);
+        }
+        .dark-mode .risk-safe {
+            background-color: #1a3a2c !important;
+            color: #38b000 !important;
+            border-left: 5px solid #38b000;
+        }
+
+        .dark-mode .spinner-border {
+            border-color: #f8f9fa #23272f #23272f #23272f !important;
+        }
+
+        .dark-mode .input-group .form-control,
+        .dark-mode .input-group .input-group-text {
+            background: #23272f !important;
+            color: #f8f9fa !important;
+            border-color: #343a40 !important;
+        }
+
+        .dark-mode .btn-outline-secondary {
+            color: #f8f9fa !important;
+            border-color: #f8f9fa !important;
+        }
+        .dark-mode .btn-outline-secondary:hover {
+            background: #343a40 !important;
+            color: #fff !important;
+        }
+
         .risk-high { 
             background-color: #fff0f3;
             border-left: 5px solid var(--danger-color);
             color: #d90429;
         }
-        
+
         .risk-medium { 
             background-color: #fff8e6;
             border-left: 5px solid var(--warning-color);
             color: #f77f00;
         }
-        
+
         .risk-low { 
             background-color: #f0f9ff;
             border-left: 5px solid var(--info-color);
             color: #1a759f;
         }
-        
+
         .risk-safe { 
             background-color: #f0fff4;
             border-left: 5px solid #38b000;
             color: #1b4332;
         }
-        
+
         .language-selector {
             position: absolute;
             top: 20px;
             right: 20px;
             z-index: 1000;
         }
-        
+
         .language-selector select {
             border-radius: 20px;
             padding: 0.5rem 1rem;
@@ -136,12 +236,12 @@
             font-weight: 500;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        
+
         h1, h2, h3, h4, h5, h6 {
             color: var(--dark-color);
             font-weight: 700;
         }
-        
+
         #mainTitle {
             font-size: 2.5rem;
             margin-bottom: 2rem !important;
@@ -151,7 +251,7 @@
             position: relative;
             display: inline-block;
         }
-        
+
         #mainTitle::after {
             content: '';
             position: absolute;
@@ -162,30 +262,30 @@
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             border-radius: 2px;
         }
-        
+
         .alert {
             border-radius: 10px;
             padding: 1.25rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--primary-color);
         }
-        
+
         .loading-spinner {
             display: none;
             text-align: center;
             margin: 2rem 0;
         }
-        
+
         .spinner {
             width: 3rem;
             height: 3rem;
         }
-        
+
         .risk-meter {
             height: 20px;
             border-radius: 10px;
@@ -194,7 +294,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .risk-meter-indicator {
             position: absolute;
             height: 100%;
@@ -204,28 +304,28 @@
             transform: translateX(-50%);
             box-shadow: 0 0 5px rgba(0,0,0,0.3);
         }
-        
+
         .tooltip-icon {
             color: var(--primary-color);
             margin-left: 5px;
             cursor: pointer;
         }
-        
+
         .feature-card {
             text-align: center;
             padding: 2rem 1rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .feature-card h4 {
             margin: 1rem 0;
             font-weight: 600;
         }
-        
+
         .feature-card p {
             color: #6c757d;
         }
-        
+
         @media (max-width: 768px) {
             #mainTitle {
                 font-size: 2rem;
@@ -235,16 +335,68 @@
                 padding: 1.5rem;
             }
         }
+
+        /* Toast styles */
+        .toast-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 2000;
+        }
+        .toast {
+            min-width: 250px;
+        }
+
+        .dark-mode #analyzeTitle {
+            color: white !important; /* or any color you like */
+        }
+
+        .dark-mode #educationTitle {
+            color: white !important; /* Use any color you prefer */
+}
+
+        #themeToggleBtn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+        }
+
+        /* Remove or adjust this if you want only the language selector on the right */
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .dark-mode #resultsTitle {
+            color: white !important;
+        }
+
+        .dark-mode #resultContent h5,
+        .dark-mode #resultContent .risk-low h5,
+        .dark-mode #resultContent .risk-low p,
+        .dark-mode #resultContent .risk-low {
+            color: #fff !important;
+        }
     </style>
 </head>
+    
 <body>
+    <button id="themeToggleBtn" class="btn btn-outline-secondary" title="Toggle dark/light mode" aria-label="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+    </button>
+    <div class="toast-container" id="toastContainer"></div>
     <div class="container mt-5">
-        <div class="language-selector">
-            <select id="languageSelect" class="form-select shadow-sm">
-                <option value="en">English</option>
-                <option value="si">සිංහල</option>
-                <option value="ta">தமிழ்</option>
-            </select>
+       <div class="d-flex justify-content-end align-items-center mb-3" style="gap: 1rem; flex-direction: row; align-items: center;">
+            <div class="language-selector">
+                <select id="languageSelect" class="form-select shadow-sm" aria-label="Language selector">
+                    <option value="en">English</option>
+                    <option value="si">සිංහල</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+            </div>
         </div>
         
         <div class="row justify-content-center">
@@ -352,21 +504,85 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let currentLanguage = 'en';
-        
+        let currentLanguage = localStorage.getItem('lang') || 'en';
+
+        // Theme toggle
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        function setTheme(mode) {
+            if (mode === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        // Load theme from storage
+        document.addEventListener('DOMContentLoaded', function() {
+            setTheme(localStorage.getItem('theme') || 'light');
+        });
+        themeToggleBtn.addEventListener('click', function() {
+            const isDark = document.body.classList.contains('dark-mode');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+
+        // Toast pop-up messages
+        function showToast(message, type = 'info') {
+            const toastId = 'toast' + Date.now();
+            const icon = {
+                'success': 'fa-check-circle',
+                'danger': 'fa-times-circle',
+                'warning': 'fa-exclamation-triangle',
+                'info': 'fa-info-circle'
+            }[type] || 'fa-info-circle';
+            const toastHtml = `
+                <div class="toast align-items-center text-bg-${type} border-0 show mb-2" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fas ${icon} me-2"></i>${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            const container = document.getElementById('toastContainer');
+            container.insertAdjacentHTML('beforeend', toastHtml);
+            setTimeout(() => {
+                const toast = document.getElementById(toastId);
+                if (toast) toast.remove();
+            }, 4000);
+        }
+
+        // Override showAlert to use toast
+        function showAlert(message, type) {
+            showToast(message, type);
+        }
+
+        // Language switching
+        document.getElementById('languageSelect').value = currentLanguage;
+        document.getElementById('languageSelect').addEventListener('change', function() {
+            currentLanguage = this.value;
+            localStorage.setItem('lang', currentLanguage);
+            loadEducationalContent();
+            updateUILanguage();
+            showToast(languageNames[currentLanguage] + ' selected', 'info');
+        });
+
+        // Language names for toast
+        const languageNames = {
+            'en': 'English',
+            'si': 'සිංහල',
+            'ta': 'தமிழ்'
+        };
+
         // Initialize tooltips
         document.addEventListener('DOMContentLoaded', function() {
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
-        });
-        
-        // Language switching
-        document.getElementById('languageSelect').addEventListener('change', function() {
-            currentLanguage = this.value;
-            loadEducationalContent();
-            updateUILanguage();
         });
         
         // URL Analysis
@@ -401,18 +617,6 @@
         
         function hideLoading() {
             document.getElementById('loadingSpinner').style.display = 'none';
-        }
-        
-        function showAlert(message, type) {
-            const alertHtml = `
-                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                    ${message}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            `;
-            
-            // You might want to add this to a specific alerts container
-            document.body.insertAdjacentHTML('afterbegin', alertHtml);
         }
         
         async function analyzeURL(url) {
