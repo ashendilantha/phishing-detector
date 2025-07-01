@@ -10,5 +10,8 @@
         "./frontend",
         "-p",
         "*test.py"
+    ],
+    "python.analysis.extraPaths": [
+        "./backend/models"
     ]
 }

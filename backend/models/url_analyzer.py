@@ -7,32 +7,43 @@ from datetime import datetime
 
 class URLAnalyzer:
     def __init__(self):
-        self.suspicious_keywords = ['secure', 'account', 'update', 'verify', 'login', 'paypal', 'amazon', 'microsoft',
-                                   'password', 'credentials', 'urgent', 'security', 'alert', 'suspended', 'locked',
-                                   'banned', 'action', 'required', 'confirm', 'identity', 'bank', 'payment', 'refund',
-                                   'limited', 'offer', 'prize', 'win', 'claim', 'rewards', 'billing', 'invoice',
-                                   'statement', 'unauthorized', 'fraud', 'hacked', 'compromised', 'phishing', 'scam',
-                                   'support', 'helpdesk', 'customer', 'service', 'recovery', 'restore', 'access', 'blocked',
-                                   'expired', 'validation', 'authentication', 'authorize', 'social', 'security', 'number',
-                                   'ssn', 'credit', 'card', 'debit', 'paypal', 'amazon', 'microsoft', 'google', 'apple',
-                                   'netflix', 'ebay', 'instagram', 'facebook', 'twitter', 'whatsapp', 'telegram', 'crypto',
-                                   'bitcoin', 'wallet', 'exchange', 'login', 'signin', 'portal', 'admin', 'dashboard',
-                                   'settings', 'profile', 'info', 'personal', 'data', 'breach', 'leak', 'exposed']
-        
-        self.suspicious_tlds = ['.tk', '.ml', '.ga', '.cf',
-                               '.gq', '.pw', '.cc', '.xyz',
-                               '.top', '.club', '.online', '.site',
-                               '.space', '.webcam', '.work', '.biz',
-                               '.info', '.download', '.stream', '.gdn',
-                               '.loan', '.pro', '.science', '.tech',
-                               '.ren', '.win', '.vip', '.bid',
-                               '.click', '.country', '.date', '.faith',
-                               '.party', '.racing', '.review', '.trade',
-                               '.accountant', '.bar', '.cricket', '.men',
-                               '.mom', '.photo', '.pics', '.zip',
-                               '.cyou', '.rest', '.lol', '.uno',
-                               '.buzz', '.nexus', '.yokohama', '.tokyo']
-    
+        self.suspicious_keywords = [
+            'secure', 'account', 'update', 'verify', 'login', 'signin', 'authentication', 'authorize',
+            'password', 'credentials', 'security', 'alert', 'suspended', 'locked', 'banned', 'action',
+            'required', 'confirm', 'identity', 'bank', 'payment', 'refund', 'billing', 'invoice',
+            'statement', 'unauthorized', 'fraud', 'hacked', 'compromised', 'phishing', 'scam',
+            'support', 'helpdesk', 'customer', 'service', 'recovery', 'restore', 'access', 'blocked',
+            'expired', 'validation', 'personal', 'data', 'breach', 'leak', 'exposed',
+            'paypal', 'amazon', 'microsoft', 'google', 'apple', 'netflix', 'ebay', 'instagram',
+            'facebook', 'twitter', 'whatsapp', 'telegram', 'crypto', 'bitcoin', 'wallet', 'exchange',
+            'portal', 'admin', 'dashboard', 'settings', 'profile', 'info', 'social', 'security',
+            'number', 'ssn', 'credit', 'card', 'debit', 'voicemail', 'dapp', 'mail', 'webmail',
+            'survey', 'klarna', 'mitid', 'telia', 'post', 'delivery', 'package', 'track', 'redelivery',
+            'brt', 'dhl', 'usps', 'sunrise', 'aeon', 'societegenerale', 'cetelem', 'steam', 'outlook',
+            'office', 'onedrive', 'sharepoint', 'cloud', 'ipfs', 'docs', 'document', 'form', 'invoice',
+            'receipt', 'business', 'btconnect', 'orange', 'messagerie', 'facture', 'recuperacion',
+            'lowongankerja', 'bancolombia', 'verifica', 'accedi', 'sucursal', 'transac', 'layanan',
+            'dompet', 'digital', 'impots', 'gouv', 'chase', 'wellsfargo', 'verification', 'auth',
+            'resolve', 'rectify', 'metamask', 'swap', 'freefire', 'roblox', 'prompt', 'pacco',
+            'spedizione', 'simmonsbank', 'copyright', 'truthsocial', 'nedbank', 'hulu', 'linkedin']
+
+        self.suspicious_tlds = [
+            '.tk', '.ml', '.ga', '.cf', '.gq', '.pw', '.cc', '.xyz', '.top', '.club', '.online',
+            '.site', '.space', '.webcam', '.work', '.biz', '.info', '.download', '.stream', '.gdn',
+            '.loan', '.pro', '.science', '.tech', '.ren', '.win', '.vip', '.bid', '.click', '.country',
+            '.date', '.faith', '.party', '.racing', '.review', '.trade', '.accountant', '.bar',
+            '.cricket', '.men', '.mom', '.photo', '.pics', '.zip', '.cyou', '.rest', '.lol', '.uno',
+            '.buzz', '.nexus', '.yokohama', '.tokyo', '.icu', '.co', '.is', '.fr', '.life', '.dev',
+            '.app', '.cloud', '.link', '.my', '.cn', '.eu', '.it', '.co.uk', '.org', '.co.za',
+            '.co.jp', '.co.nz', '.co.id', '.com.br', '.com.pe', '.com.my', '.com.au', '.com.hk',
+            '.gouv', '.govt', '.official', '.police', '.law', '.legal', '.court', '.justice', '.admin', '.secure',
+            '.verification', '.auth', '.support', '.help', '.service', '.customer', '.network', '.systems',
+            '.security', '.update', '.verify', '.account', '.login', '.banking', '.payments', '.refund',
+            '.ru', '.cn', '.in', '.br', '.id', '.ng', '.vn', '.pk', '.tr', '.ua', '.pl', '.ro', '.ar', '.mx', '.za',
+            '.cyou', '.buzz', '.uno', '.lol', '.rest', '.nexus', '.yokohama', '.tokyo', '.icu', '.fit', '.gay', '.lgbt',
+            '.quest', '.ooo', '.sbs', '.voto', '.wow', '.yeah', '.zulu', '.amazon', '.google', '.apple', '.microsoft',
+            '.spotify', '.android', '.windows', '.linux', '.ebay', '.alibaba', '.walmart', '.target', '.bestbuy'
+        ]
     def analyze_url(self, url):
         # URL analysis
         features = self.extract_features(url)
