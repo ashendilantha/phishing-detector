@@ -64,7 +64,7 @@ requirements.txt        # Python dependencies
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/phishing-detector.git
+   git clone https://github.com/ashendilantha/phishing-detector.git
    cd phishing-detector
    ```
 
