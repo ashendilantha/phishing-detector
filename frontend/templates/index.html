@@ -700,43 +700,6 @@
                 html += `</div></div>`;
             }
             
-            if (result.ml_prediction && result.ml_prediction.is_phishing !== null) {
-                const mlIcon = result.ml_prediction.is_phishing ? 'fa-times-circle text-danger' : 'fa-check-circle text-success';
-                const mlText = result.ml_prediction.is_phishing ? 'Likely Phishing' : 'Likely Safe';
-                
-                html += `
-                    <div class="mb-4 animate__animated animate__fadeIn">
-                        <h5><i class="fas fa-robot me-2"></i>AI Prediction:</h5>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas ${mlIcon} fa-2x me-3"></i>
-                                            <div>
-                                                <h5 class="mb-0">${mlText}</h5>
-                                                <small class="text-muted">Machine Learning Analysis</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="progress mt-3 mt-md-0">
-                                            <div class="progress-bar bg-${result.ml_prediction.is_phishing ? 'danger' : 'success'}" 
-                                                 role="progressbar" 
-                                                 style="width: ${result.ml_prediction.confidence * 100}%" 
-                                                 aria-valuenow="${result.ml_prediction.confidence * 100}" 
-                                                 aria-valuemin="0" 
-                                                 aria-valuemax="100">
-                                                ${(result.ml_prediction.confidence * 100).toFixed(1)}% confidence
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-            }
-            
             html += `
                 <div class="animate__animated animate__fadeIn">
                     <h5><i class="fas fa-lightbulb me-2"></i>Recommendations:</h5>
