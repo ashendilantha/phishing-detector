@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from models.url_analyzer import URLAnalyzer
 from models.form_detector import FormDetector
-from models.ml_model import PhishingMLModel
 import os
 import re
 import requests
@@ -13,10 +12,6 @@ CORS(app)
 # Initialize components
 url_analyzer = URLAnalyzer()
 form_detector = FormDetector()
-ml_model = PhishingMLModel()
-
-# Load ML model if available
-ml_model.load_model()
 
 @app.route('/')
 def index():
@@ -36,24 +31,10 @@ def analyze_url():
         # Heuristic analysis
         heuristic_result = url_analyzer.analyze_url(url)
         
-        # ML prediction if model is available
-        ml_prediction = None
-        ml_confidence = None
-        
-        if ml_model.is_trained:
-            prediction, confidence = ml_model.predict(heuristic_result['features'])
-            if prediction is not None:
-                ml_prediction = bool(prediction)
-                ml_confidence = float(confidence)
-        
         # Combine results
         result = {
             'url': url,
             'heuristic_analysis': heuristic_result,
-            'ml_prediction': {
-                'is_phishing': ml_prediction,
-                'confidence': ml_confidence
-            } if ml_prediction is not None else None,
             'recommendations': generate_recommendations(heuristic_result)
         }
         
